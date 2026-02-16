@@ -53,12 +53,12 @@ int main() {
     c_out = proj_trans(P, PJ_FWD, c_in);
     
     std::cout << "Output (UTM Zone 33N):" << std::endl;
-    std::cout << "  Easting:  " << c_out.enu.e << " meters" << std::endl;
-    std::cout << "  Northing: " << c_out.enu.n << " meters" << std::endl;
+    std::cout << "  Easting:  " << c_out.xy.x << " meters" << std::endl;
+    std::cout << "  Northing: " << c_out.xy.y << " meters" << std::endl;
     std::cout << std::endl;
     
     // Verify transformation was successful
-    if (c_out.enu.e == HUGE_VAL || c_out.enu.n == HUGE_VAL) {
+    if (c_out.xy.x == HUGE_VAL || c_out.xy.y == HUGE_VAL) {
         std::cerr << "ERROR: Transformation failed!" << std::endl;
         proj_destroy(P);
         proj_context_destroy(ctx);
@@ -67,8 +67,8 @@ int main() {
     
     // Expected values for Berlin (approximate)
     // UTM Zone 33N: E~391000, N~5820000
-    if (c_out.enu.e > 390000 && c_out.enu.e < 392000 &&
-        c_out.enu.n > 5819000 && c_out.enu.n < 5821000) {
+    if (c_out.xy.x > 390000 && c_out.xy.x < 392000 &&
+        c_out.xy.y > 5819000 && c_out.xy.y < 5821000) {
         std::cout << "SUCCESS: Transformation result is within expected range!" << std::endl;
     } else {
         std::cout << "WARNING: Result outside expected range" << std::endl;
