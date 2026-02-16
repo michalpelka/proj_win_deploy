@@ -100,9 +100,9 @@ echo ==== Instal PROJ ===============
 cmake --install build_proj
 if %errorlevel% neq 0 exit /b 1
 
-echo === Verifying dependencies of proj.dll ===
-if exist install_proj\bin\proj_9_3.dll (
-dumpbin /dependents install_proj\bin\proj_9_3.dll
-) else (
-echo WARNING: proj.dll not found in expec
+@REM echo === Verifying dependencies of proj.dll ===
+@REM if exist install_proj\bin\proj_9_3.dll (
+@REM dumpbin /dependents install_proj\bin\proj_9_3.dll
+@REM ) else (
+@REM echo WARNING: proj.dll not found in expec
 
