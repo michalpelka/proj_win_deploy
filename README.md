@@ -10,5 +10,5 @@ call "%ProgramFiles%\Microsoft Visual Studio\20xx\Community\VC\Auxiliary\Build\v
 ```
 
 ```cmd
-build_all.bat
+build_proj.bat
 ```
