@@ -1,0 +1,53 @@
+name: Windows Build (bat)
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-2022
+
+    defaults:
+      run:
+        shell: cmd
+
+    steps:
+      - name: Checkout (with submodules)
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Setup MSVC (VS2022)
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Install Ninja
+        run: choco install ninja -y
+
+      - name: Show tool versions
+        run: |
+          cl
+          cmake --version
+          ninja --version
+
+      - name: Run build script
+        run: build_proj.bat
+
+      - name: Verify output
+        run: |
+          if not exist install_proj\bin\proj_9_3.dll (
+              echo ERROR: proj_9_3.dll not found
+              exit /b 1
+          )
+
+      - name: Package artifact
+        run: |
+          tar -a -c -f proj-windows.zip install_proj
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: proj-windows
+          path: proj-windows.zip

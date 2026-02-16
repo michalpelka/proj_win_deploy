@@ -1,0 +1,9 @@
+[submodule "proj"]
+	path = proj
+	url = https://github.com/OSGeo/PROJ.git
+[submodule "zlib"]
+	path = zlib
+	url = https://github.com/madler/zlib.git
+[submodule "libtiff"]
+	path = libtiff
+	url = https://gitlab.com/libtiff/libtiff.git
