@@ -35,10 +35,21 @@ REM Copy PROJ DLL to sample app directory for testing
 copy install_proj\bin\*.dll build_sample\ >nul 2>&1
 
 REM Run the sample app
-build_sample\proj_sample.exe
+cd build_sample
+
+proj_sample.exe
 
 if %errorlevel% neq 0 (
   echo ERROR: Sample app test failed
+  exit /b 1
+)
+
+REM Run the sample app
+
+grid_transform.exe
+
+if %errorlevel% neq 0 (
+  echo ERROR: grid_transform app test failed
   exit /b 1
 )
 
