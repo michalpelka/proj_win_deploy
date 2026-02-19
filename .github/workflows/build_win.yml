@@ -2,12 +2,18 @@ name: Windows Build (bat)
 
 on:
   push:
+    branches:
+      - "**"
+    tags:
+      - "v*"
   pull_request:
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: windows-2022
+    permissions:
+      contents: write
 
     defaults:
       run:
@@ -64,3 +70,17 @@ jobs:
         with:
           name: sample-app-windows
           path: sample-app-windows.zip
+          
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          name: PROJ ${{ github.ref_name }}
+          generate_release_notes: true
+          files: |
+            proj-windows.zip
+            sample-app-windows.zip
+            proj-windows.zip.sha256
+            sample-app-windows.zip.sha256
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
