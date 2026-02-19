@@ -58,6 +58,19 @@ jobs:
           name: proj-windows
           path: proj-windows.zip
 
+      - name: Build sample app
+        run: build_sample.bat
+
+      - name: Package sample app artifact
+        run: |
+          tar -a -c -f sample-app-windows.zip build_sample\proj_sample.exe install_proj\bin\*.dll
+
+      - name: Upload sample app artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sample-app-windows
+          path: sample-app-windows.zip
+          
       - name: Create GitHub Release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2

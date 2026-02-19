@@ -35,6 +35,9 @@ cmake --fresh -S zlib -B build_zlib -G Ninja ^
 cmake --build build_zlib
 cmake --install build_zlib
 
+set ZLIB_ROOT=%CD%\install_zlib
+set ZLIB_DIR=%CD%\install_zlib
+
 echo === Building libtiff (minimal static, no extra codecs) ===
 cmake --fresh -S libtiff -B build_tiff -G Ninja ^
 -DCMAKE_BUILD_TYPE=Release ^
@@ -44,6 +47,7 @@ cmake --fresh -S libtiff -B build_tiff -G Ninja ^
 -Dtiff-tools=OFF ^
 -Dtiff-tests=OFF ^
 -Dtiff_static=ON ^
+-Dzlib=ON ^
 -Djpeg=OFF ^
 -Dwebp=OFF ^
 -Dzstd=OFF ^
@@ -71,9 +75,17 @@ if %errorlevel% neq 0 exit /b 1
 lib sqlite3.obj /OUT:sqlite3.lib
 popd
 
+echo ==== Patch PROJ ==============================
+cd proj
+git apply ..\proj.patch
+if %errorlevel% neq 0 (
+echo WARNING: Patch may already be applied or failed, continuing...
+)
+cd ..
+
 echo === Configure PROJ (Ninja + CMake 4.x fix) ===
 cmake --fresh -S PROJ -B build_proj -G Ninja ^
-  -DCMAKE_PREFIX_PATH=%CD%\install_tiff;%CD%\install_zlib\lib\cmake\zlib ^
+  -DCMAKE_PREFIX_PATH="%CD%\install_zlib;%CD%\install_tiff;" ^
   -DCMAKE_INSTALL_PREFIX=%CD%\install_proj ^
   -DCMAKE_BUILD_TYPE=Release ^
   -DCMAKE_POLICY_VERSION_MINIMUM=3.5 ^
@@ -96,9 +108,13 @@ cmake --build build_proj
 if %errorlevel% neq 0 exit /b 1
 
 
+
 echo ==== Instal PROJ ===============
 cmake --install build_proj
 if %errorlevel% neq 0 exit /b 1
+
+echo ==== COPY z.dll to PROJ install folder ===============
+copy /Y install_zlib\bin\z.dll install_proj\bin\
 
 @REM echo === Verifying dependencies of proj.dll ===
 @REM if exist install_proj\bin\proj_9_3.dll (

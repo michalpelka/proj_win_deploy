@@ -1,0 +1,13 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index df42815b..0c9d8dc0 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -18,7 +18,7 @@ project(PROJ
+ 
+ # Only interpret if() arguments as variables or keywords when unquoted
+ cmake_policy(SET CMP0054 NEW)
+-
++find_package(ZLIB)
+ # Set C++ version
+ # Make CMAKE_CXX_STANDARD available as cache option overridable by user
+ set(CMAKE_CXX_STANDARD 11
