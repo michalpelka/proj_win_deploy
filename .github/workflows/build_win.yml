@@ -12,6 +12,8 @@ on:
 jobs:
   build:
     runs-on: windows-2022
+    permissions:
+      contents: write
 
     defaults:
       run:
@@ -55,7 +57,7 @@ jobs:
         with:
           name: proj-windows
           path: proj-windows.zip
-          
+
       - name: Create GitHub Release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
@@ -63,9 +65,9 @@ jobs:
           name: PROJ ${{ github.ref_name }}
           generate_release_notes: true
           files: |
-            proj-windows-${{ github.ref_name }}.zip
-            sample-app-windows-${{ github.ref_name }}.zip
-            proj-windows-${{ github.ref_name }}.zip.sha256
-            sample-app-windows-${{ github.ref_name }}.zip.sha256
+            proj-windows.zip
+            sample-app-windows.zip
+            proj-windows.zip.sha256
+            sample-app-windows.zip.sha256
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
