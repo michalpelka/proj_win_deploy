@@ -114,10 +114,10 @@ cmake --install build_proj
 if %errorlevel% neq 0 exit /b 1
 
 echo ==== COPY z to PROJ install folder ===============
-robocopy install_zlib\bin     install_proj\bin     z.dll
-robocopy install_zlib\include install_proj\include *.h /S
-robocopy install_zlib\lib     install_proj\lib     /E
-robocopy install_zlib\share   install_proj\share   /E
+robocopy install_zlib\bin     install_proj\bin     z.dll || IF %ERRORLEVEL% LEQ 7 exit /B 0
+robocopy install_zlib\include install_proj\include *.h /S || IF %ERRORLEVEL% LEQ 7 exit /B 0
+robocopy install_zlib\lib     install_proj\lib     /E || IF %ERRORLEVEL% LEQ 7 exit /B 0
+robocopy install_zlib\share   install_proj\share   /E || IF %ERRORLEVEL% LEQ 7 exit /B 0
 
 @REM echo === Verifying dependencies of proj.dll ===
 @REM if exist install_proj\bin\proj_9_3.dll (
